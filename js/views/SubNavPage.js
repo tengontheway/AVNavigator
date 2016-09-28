@@ -1,4 +1,5 @@
 /**
+ * 子页面
  * Created by Qx on 9/27/16.
  */
 
@@ -11,19 +12,13 @@ import {
     Navigator
 } from 'react-native';
 
-import SecondPageComponent from './SecondPageComponent'
 
-export default  class FirstPageComponent extends Component {
+export default  class SubNavPage extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            id: 2,
-            user: null,
-        };
     }
 
-    _pressButton() {
+    onPress1() {
         let _this = this
 
         const {navigator} = this.props;
@@ -32,8 +27,7 @@ export default  class FirstPageComponent extends Component {
         //这里传递了navigator作为props
         if (navigator) {
             navigator.push({
-                name: 'SecondPageComponent',
-                component: SecondPageComponent,
+                screen: 'PassParams',
                 //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
                 params: {
                     id: this.state.id,
@@ -44,36 +38,35 @@ export default  class FirstPageComponent extends Component {
                         })
                     }
                 },
+                navBarHidden: true,
+                navBarStyle: {
+                    title: 'PassParams',
+                    isShowRight: false,
+                },
+
                 animationType: Navigator.SceneConfigs.FloatFromRight
             })
         }
     }
 
+    onPress2() {
+
+    }
+
     render() {
-        if (this.state.user) {
-            return (
-                <View style={{marginTop: 50}}>
-                    <Text>用户信息: { JSON.stringify(this.state.user) }</Text>
-                </View>
-            );
-        } else {
-            return (
+        return (
+            <View style={{flex:1}}>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: 'blue'
                 }}>
-                    <TouchableOpacity onPress={this._pressButton.bind(this)}>
-                        <Text>点我跳转并传递id</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.welcome}>
-                        FFirstPageComponent
-                    </Text>
+                    <Text onPress={this.onPress1.bind(this)}>页面1</Text>
                 </View>
-            )
-        }
+            </View>
+        )
+
     }
 }
 

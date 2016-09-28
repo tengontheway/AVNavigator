@@ -15,26 +15,58 @@ import {
 import utils from "./js/utils/Util"
 global.utils = utils
 
-import FirstPageComponent from './js/views/FirstPageComponent';
+import NavMgr from './js/NavMgr'
+global.nav_mgr = new NavMgr()
+
+
+import NavViewsMgr from './js/NavViewsMgr'
+
+import MainPage from './js/views/MainPage';
+import PageContainer from './js/PageContainer'
+
+import PassParams from './js/views/PassParams'
+import SecondPageComponent from './js/views/SecondPageComponent'
+import SubAnimPage from './js/views/SubAnimPage'
+import SubNavPage from './js/views/SubNavPage'
+import TestAnim from './js/views/TestAnim'
+
+NavViewsMgr.register("views.MainPage", MainPage)
+NavViewsMgr.register("views.PageContainer", PageContainer)
+
+NavViewsMgr.register("views.PassParams", PassParams)
+NavViewsMgr.register("views.SecondPageComponent", SecondPageComponent)
+NavViewsMgr.register("views.SubAnimPage", SubAnimPage)
+NavViewsMgr.register("views.SubNavPage", SubNavPage)
+NavViewsMgr.register("views.TestAnim", TestAnim)
 
 class AVNavigator extends Component {
-  render() {
-    let defaultName = 'FirstPageComponent';
-    let defaultComponent = FirstPageComponent;
-    return (
-        <Navigator
-            ref={nav => global.nav = nav}
-            initialRoute={{ name: defaultName, component: defaultComponent }}
-            configureScene={(route) => {
-              return Navigator.SceneConfigs.VerticalDownSwipeJump;
-            }}
-            renderScene={(route, navigator) => {
-              let Com = route.component;
+    constructor(props) {
+        super(props)
+    }
 
-              return <Com  {...route.params} navigator={navigator} />
-            }} />
-    );
-  }
+    render() {
+        let defaultName = 'MainPage';
+        let defaultComponent = MainPage;
+        return (
+            <Navigator
+                ref={nav => global._global_nav = nav}
+                initialRoute={{
+                    screen: 'views.MainPage',
+                    navBarHidden: false,
+                    navBarStyle: {
+                        title: '首页',
+                        isShowLeft: false,
+                        isShowRight: false,
+                    }
+                }}
+                configureScene={(route) => {
+                    return route.animationType || Navigator.SceneConfigs.VerticalDownSwipeJump;
+                }}
+                renderScene={(route, navigator) => {
+                    return <PageContainer {...route} route={route} navigator={navigator}/>
+                }}/>
+        );
+    }
 }
 
 AppRegistry.registerComponent('AVNavigator', () => AVNavigator);
