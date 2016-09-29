@@ -30,8 +30,8 @@ export default  class TestAnim extends Component {
                     alignItems: 'center',
                     backgroundColor: 'red'
                 }}>
-                    <Text>用于测试所有的动画</Text>
-                    <Text>`Navigator.SceneConfigs.PushFromRight (默认)
+                    <Text>所有动画类型，点击导航栏返回</Text>
+                    <Text>Navigator.SceneConfigs.PushFromRight (默认)
                         Navigator.SceneConfigs.FloatFromRight
                         Navigator.SceneConfigs.FloatFromLeft
                         Navigator.SceneConfigs.FloatFromBottom
@@ -40,7 +40,7 @@ export default  class TestAnim extends Component {
                         Navigator.SceneConfigs.HorizontalSwipeJump
                         Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
                         Navigator.SceneConfigs.VerticalUpSwipeJump
-                        Navigator.SceneConfigs.VerticalDownSwipeJump`</Text>
+                        Navigator.SceneConfigs.VerticalDownSwipeJump</Text>
                 </View>
             </View>
         )

@@ -18,12 +18,10 @@ global.utils = utils
 import NavMgr from './js/NavMgr'
 global.nav_mgr = new NavMgr()
 
-
 import NavViewsMgr from './js/NavViewsMgr'
 
 import MainPage from './js/views/MainPage';
 import PageContainer from './js/PageContainer'
-
 import PassParams from './js/views/PassParams'
 import SecondPageComponent from './js/views/SecondPageComponent'
 import SubAnimPage from './js/views/SubAnimPage'
@@ -45,8 +43,6 @@ class AVNavigator extends Component {
     }
 
     render() {
-        let defaultName = 'MainPage';
-        let defaultComponent = MainPage;
         return (
             <Navigator
                 ref={nav => global._global_nav = nav}
@@ -60,7 +56,10 @@ class AVNavigator extends Component {
                     }
                 }}
                 configureScene={(route) => {
-                    return route.animationType || Navigator.SceneConfigs.VerticalDownSwipeJump;
+                    if (route.animType) return route.animType
+
+                    let anim = nav_mgr.getAnimMgr().getAnim(route.animName)
+                    return anim || Navigator.SceneConfigs.VerticalDownSwipeJump;
                 }}
                 renderScene={(route, navigator) => {
                     return <PageContainer {...route} route={route} navigator={navigator}/>

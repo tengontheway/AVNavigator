@@ -49,8 +49,7 @@ const {navigator} = this.props;
 //这里传递了navigator作为props
 if (navigator) {
     navigator.push({
-        name: 'SecondPageComponent',
-        component: SecondPageComponent,
+        screen: 'views.LoginView',          // 注册的界面名
         //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
         params: {
             id: this.state.id,
@@ -61,7 +60,53 @@ if (navigator) {
                 })
             }
         },
-        animationType: Navigator.SceneConfigs.FloatFromRight
+        navBarHidden: false,                // 导航栏隐藏(默认显示)
+        customNavBar: null,                 // 完全自己定制导航栏(navBarHidden!=false时有效)
+        navBarStyle: {                      // NavBar的参数,具体参考NavigationBar的参数
+            title: '首页',
+            isShowLeft: false,
+            isShowRight: false,
+        }
     })
 }
 ```
+
+# 导航栏动画跳转
+调用规则: animType > animName > 默认
+
+- 方法1：使用animName(推荐)
+```
+{
+  ...
+  animName: 'FloatFromRight',
+  ...
+}
+```
+
+- 方法2：使用animType
+```
+{
+  ...
+  animType: Navigator.SceneConfigs.FloatFromRight,
+  ...
+}
+```
+
+通过参数 ```animName: 'FloatFromRight'```来实现，避免了各个界面对于```Navigator```的引用
+内部会将动画名字转化为动画类型```animType: Navigator.SceneConfigs.FloatFromRight```传递给Navigator调用
+
+类型参考: ```NavAnimationMgr.js```中
+```
+Navigator.SceneConfigs.PushFromRight (默认)
+Navigator.SceneConfigs.FloatFromRight
+Navigator.SceneConfigs.FloatFromLeft
+Navigator.SceneConfigs.FloatFromBottom
+Navigator.SceneConfigs.FloatFromBottomAndroid
+Navigator.SceneConfigs.FadeAndroid
+Navigator.SceneConfigs.HorizontalSwipeJump
+Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
+Navigator.SceneConfigs.VerticalUpSwipeJump
+Navigator.SceneConfigs.VerticalDownSwipeJump
+```
+
+# 导航栏定制
