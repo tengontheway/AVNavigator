@@ -19,7 +19,7 @@ export default  class MainPage extends Component {
         }
     }
 
-    onPressPassParams() {
+    onPressPassParamsTest() {
         let _this = this
 
         const {navigator} = this.props;
@@ -28,20 +28,12 @@ export default  class MainPage extends Component {
         //这里传递了navigator作为props
         if (navigator) {
             navigator.push({
-                screen: 'views.PassParams',
+                screen: 'views.SubPassParams',
                 //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
-                params: {
-                    id: this.state.id,
-                    //从SecondPageComponent获取user
-                    getUser: function (user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
-                },
+                params: {},
                 navBarHidden: false,
                 navBarStyle: {
-                    title: 'PassParams',
+                    title: '测试传递参数',
                     isShowRight: false,
                 },
 
@@ -72,7 +64,7 @@ export default  class MainPage extends Component {
             params: {},
             navBarHidden: false,
             navBarStyle: {
-                title: '测试导航栏',
+                title: '测试动画',
                 isShowRight: false,
             },
 
@@ -89,7 +81,7 @@ export default  class MainPage extends Component {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
-                <Text style={{margin: 10}} onPress={this.onPressPassParams.bind(this)}>测试传递参数</Text>
+                <Text style={{margin: 10}} onPress={this.onPressPassParamsTest.bind(this)}>测试传递参数</Text>
                 <Text style={{margin: 10}} onPress={this.onPressNavTest.bind(this)}>测试导航栏</Text>
                 <Text style={{margin: 10}} onPress={this.onPressAnimTest.bind(this)}>测试动画</Text>
             </View>

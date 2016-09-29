@@ -11,12 +11,7 @@ import {
 
 import FirstPageComponent from './MainPage';
 
-const USER_MODELS = {
-    1: {name: 'mot', age: 23},
-    2: {name: '终结者', age: 25}
-};
-
-export default class PassParams extends React.Component {
+export default class TestPassParams extends React.Component {
 
     constructor(props) {
         super(props);
@@ -27,27 +22,24 @@ export default class PassParams extends React.Component {
     }
 
     _pressButton() {
-        const {navigator} = this.props;
-
         if (this.props.getUser) {
-            let user = USER_MODELS[this.props.id];
-            this.props.getUser(user);
+            this.props.getUser({
+                name: '你妹',
+                age: 18
+            });
         }
 
-        if (navigator) {
-            //很熟悉吧，入栈出栈~ 把当前的页面pop掉，这里就返回到了上一个页面:FirstPageComponent了
-            navigator.pop();
-        }
+        nav_mgr.pop()
     }
 
     render() {
         return (
-            <View>
-                <Text>获得的参数: id={ this.state.id }</Text>
+            <View style={{flex: 1}}>
+                <Text>父界面传入id={ this.state.id }</Text>
 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity onPress={this._pressButton.bind(this)}>
-                        <Text>点我跳回去</Text>
+                        <Text>点我跳回去并传递参数</Text>
                     </TouchableOpacity>
                 </View>
             </View>

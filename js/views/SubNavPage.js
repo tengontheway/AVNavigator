@@ -29,15 +29,7 @@ export default  class SubNavPage extends Component {
             navigator.push({
                 screen: 'PassParams',
                 //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
-                params: {
-                    id: this.state.id,
-                    //从SecondPageComponent获取user
-                    getUser: function (user) {
-                        _this.setState({
-                            user: user
-                        })
-                    }
-                },
+                params: {},
                 navBarHidden: true,
                 navBarStyle: {
                     title: 'PassParams',

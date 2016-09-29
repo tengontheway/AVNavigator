@@ -22,19 +22,19 @@ import NavViewsMgr from './js/NavViewsMgr'
 
 import MainPage from './js/views/MainPage';
 import PageContainer from './js/PageContainer'
-import PassParams from './js/views/PassParams'
-import SecondPageComponent from './js/views/SecondPageComponent'
+import SubPassParams from './js/views/SubPassParams'
 import SubAnimPage from './js/views/SubAnimPage'
 import SubNavPage from './js/views/SubNavPage'
 import TestAnim from './js/views/TestAnim'
+import TestPassParams from './js/views/TestPassParams'
 
 NavViewsMgr.register("views.MainPage", MainPage)
 NavViewsMgr.register("views.PageContainer", PageContainer)
 
-NavViewsMgr.register("views.PassParams", PassParams)
-NavViewsMgr.register("views.SecondPageComponent", SecondPageComponent)
+NavViewsMgr.register("views.SubPassParams", SubPassParams)
 NavViewsMgr.register("views.SubAnimPage", SubAnimPage)
 NavViewsMgr.register("views.SubNavPage", SubNavPage)
+NavViewsMgr.register("views.TestPassParams", TestPassParams)
 NavViewsMgr.register("views.TestAnim", TestAnim)
 
 class AVNavigator extends Component {
