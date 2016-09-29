@@ -45,6 +45,10 @@ export default  class SubNavPage extends Component {
 
     }
 
+    onExit() {
+
+    }
+
     render() {
         return (
             <View style={{flex:1}}>

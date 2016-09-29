@@ -34,12 +34,20 @@ export default class PageContainer extends React.Component {
     //     });
     // }
 
-    _leftItemAction() {
+    _onPressLeftItem() {
         nav_mgr.pop()
     }
 
-    _rightItemAction() {
+    _onPressRightItem() {
 
+    }
+
+    componentWillUnmount() {
+        if (this.core_compnent) {
+            if (this.core_compnent.onExit && typeof this.core_compnent.onExit === 'function') {
+                this.core_compnent.onExit()
+            }
+        }
     }
 
     render() {
@@ -58,15 +66,23 @@ export default class PageContainer extends React.Component {
                             leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
                             rightItemTitle='下一页'
                             rightTextColor='#3393F2'
-                            leftItemFunc={this._leftItemAction.bind(this)}
-                            rightItemFunc={this._rightItemAction.bind(this)}
+                            leftItemFunc={this._onPressLeftItem.bind(this)}
+                            rightItemFunc={this._onPressRightItem.bind(this)}
                             {...navBarStyle}
                         />
                         :
                         null
                 }
 
-                <Component {...route.params} navigator={navigator}/>
+                <Component
+                    ref={com => {
+                        this.core_compnent = com
+
+                        nav_mgr.bindComponent(com, this.props.route)
+                    }}
+                    {...route.params}
+                    navigator={navigator}
+                />
             </View>
 
         )

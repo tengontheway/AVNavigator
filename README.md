@@ -7,9 +7,6 @@
 - 模态对话框
 - TabBar的显示、隐藏、定制
 
-
-
-
 # 封装需求:
 1.封装所有动画类型到AT,不希望每个界面都引用Navigator
 2.封装所有界面控件注册为字符串形式，通过字符串调用界面，当我们需要跳转页面的时候，也只需要声明跳到页面的地址，而无需引入相关组件,避免界面之间的繁琐引用
@@ -18,6 +15,12 @@
 
 # 思路参考
 [React Native中应用react-router处理路由](http://bbs.reactnative.cn/topic/495/react-native%E4%B8%AD%E5%BA%94%E7%94%A8react-router%E5%A4%84%E7%90%86%E8%B7%AF%E7%94%B1)
+
+# TODO
+- 导航栏：标题时刻居中
+- 导航栏：导航栏左侧的文字(上一个标题的)
+- 模态对话框
+- TabBar的显示隐藏
 
 
 
@@ -108,5 +111,11 @@ Navigator.SceneConfigs.HorizontalSwipeJumpFromRight
 Navigator.SceneConfigs.VerticalUpSwipeJump
 Navigator.SceneConfigs.VerticalDownSwipeJump
 ```
+
+# 传递信息
+- 传递给子窗口 ```this.props...```
+- 传递给父窗口
+每个注册界面，在退出的时候，可以在componentWillUnmount接收到退出消息，或者实现onExit函数，会自动调用
+可以在这两个函数中，将需要的数据传递给父窗口
 
 # 导航栏定制

@@ -41,7 +41,7 @@ export default class SubPassParams extends React.Component {
             customNavBar: null,                 // 完全自己定制导航栏(navBarHidden!=false时有效)
             navBarStyle: {                      // NavBar的参数,具体参考NavigationBar的参数
                 title: 'id' + this.state.id,
-                isShowLeft: false,
+                isShowLeft: true,
                 isShowRight: false,
             }
         })
