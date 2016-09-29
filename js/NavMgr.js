@@ -129,21 +129,20 @@ class NavMgr
      * 跳转回去并且卸载掉当前场景
      */
      pop() {
-        //  alert(111)
-        // let scene = NavMgr._scenes[NavMgr.cur_scene_id]
-        // if (!scene) {
-        //     console.error(`Pop scene error! CurSceneID ${NavMgr.cur_scene_id} lastSceneID ${NavMgr.last_scene_id}`)
-        //     return
-        // }
-        // if (scene.compnent) {
-        //     let com = scene.compnent
-        //     if (com.onExit && typeof com.onExit === 'function') {
-        //         com.onExit()
-        //     }
-        // }
+        let scene = NavMgr._scenes[NavMgr.cur_scene_id]
+        if (!scene) {
+            console.error(`Pop scene error! CurSceneID ${NavMgr.cur_scene_id} lastSceneID ${NavMgr.last_scene_id}`)
+            return
+        }
 
         let nav = this.getNavigator()
         nav.pop()
+    }
+
+    showLightBox(route) {
+        route.isModal = true
+
+
     }
 
     getAnimMgr() { return this.nav_anim_mgr }
@@ -154,14 +153,16 @@ class NavMgr
      * @param route
      */
     bindComponent(component, route) {
-        // let scene = NavMgr._scenes[route._gid]
-        // if (!scene) {
-        //     console.error("Bind component error! gid is not exist!" + route._gid)
-        //     return
-        // }
-        //
-        // scene.route = route
-        // scene.compnent = component
+        return
+        console.log('NavMgr._scenes:' + utils.toString(NavMgr._scenes))
+        let scene = NavMgr._scenes[route._gid]
+        if (!scene) {
+            console.error("Bind component error! gid is not exist!" + route._gid)
+            return
+        }
+
+        scene.route = route
+        scene.compnent = component
     }
 }
 

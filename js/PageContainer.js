@@ -5,6 +5,9 @@ import React, {Component} from 'react'
 import  {
     View,
     PropTypes,
+    Modal,
+    Text,
+    TouchableOpacity
 } from 'react-native';
 // import { match } from 'react-router';
 // import routesConfig from '../routes';
@@ -15,6 +18,11 @@ import NavViewsMgr from './NavViewsMgr'
 export default class PageContainer extends React.Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            transparent: true,
+            visible: true
+        }
     }
 
     // componentWillMount() {
@@ -42,6 +50,12 @@ export default class PageContainer extends React.Component {
 
     }
 
+    onPressModal() {
+        this.setState({
+            visible: false
+        })
+    }
+
     componentWillUnmount() {
         if (this.core_compnent) {
             if (this.core_compnent.onExit && typeof this.core_compnent.onExit === 'function') {
@@ -55,36 +69,65 @@ export default class PageContainer extends React.Component {
         const Component = NavViewsMgr.getView(this.props.screen)
         const navBarHidden = route.navBarHidden === undefined ? true : route.navBarHidden
         const navBarStyle = route.navBarStyle
+        let is_modal = route.isModal
 
+        var modalBackgroundStyle = {
+            backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+        };
         return (
             <View style={{flex: 1}}>
                 {
-                    !navBarHidden ?
-                        <NavigationBar
-                            title='这个是标题'
-                            leftImageSource={require('./nav_back.png')}
-                            leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
-                            rightItemTitle='下一页'
-                            rightTextColor='#3393F2'
-                            leftItemFunc={this._onPressLeftItem.bind(this)}
-                            rightItemFunc={this._onPressRightItem.bind(this)}
-                            {...navBarStyle}
-                        />
+                    is_modal ?
+                        <Modal
+                            animationType={'fade'}      //'none', 'slide', 'fade'
+                            transparent={this.state.transparent}
+                            visible={this.state.visible}
+                            onRequestClose={() => {
+                                alert("111")
+                                this.setState({
+                                    visible: false
+                                })
+                            }}
+                        >
+                            <TouchableOpacity style={[{flex: 1}, modalBackgroundStyle]} activeOpacity={1}
+                                              onPress={()=>this.onPressModal()}>
+                                <View>
+                                    <Text>哈哈哈哈</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Modal>
                         :
-                        null
+                        <View style={{flex: 1}}>
+                            {
+                                !navBarHidden ?
+                                    <NavigationBar
+                                        title='这个是标题'
+                                        leftImageSource={require('./nav_back.png')}
+                                        leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
+                                        rightItemTitle='下一页'
+                                        rightTextColor='#3393F2'
+                                        leftItemFunc={this._onPressLeftItem.bind(this)}
+                                        rightItemFunc={this._onPressRightItem.bind(this)}
+                                        {...navBarStyle}
+                                    />
+                                    :
+                                    null
+                            }
+
+                            <Component
+                                ref={com => {
+                                    this.core_compnent = com
+
+                                    nav_mgr.bindComponent(com, this.props.route)
+                                }}
+                                {...route.params}
+                                navigator={navigator}
+                            />
+                        </View>
                 }
 
-                <Component
-                    ref={com => {
-                        this.core_compnent = com
 
-                        nav_mgr.bindComponent(com, this.props.route)
-                    }}
-                    {...route.params}
-                    navigator={navigator}
-                />
             </View>
-
         )
     }
 }
