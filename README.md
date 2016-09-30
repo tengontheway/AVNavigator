@@ -53,6 +53,7 @@ const {navigator} = this.props;
 if (navigator) {
     navigator.push({
         screen: 'views.LoginView',          // 注册的界面名
+        isModal: true,                      // 是否是模态对话框(半透效果)
         //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
         params: {
             id: this.state.id,
@@ -117,5 +118,49 @@ Navigator.SceneConfigs.VerticalDownSwipeJump
 - 传递给父窗口
 每个注册界面，在退出的时候，可以在componentWillUnmount接收到退出消息，或者实现onExit函数，会自动调用
 可以在这两个函数中，将需要的数据传递给父窗口
+
+# 模态对话框
+- 实现原理:不适用Modal,而是直接适用Navigator
+在从根视图开始就使用RN编写的应用中，你应该使用Navigator来代替Modal。通过一个最顶层的Navigator，你可以通过configureScene属性更加方便的控制如何将模态场景覆盖显示在你App其余的部分上。
+参考链接:http://reactnative.cn/docs/0.31/modal.html#content
+
+- 问题: 从一个SceneA => Modal SceneB, 适用navigator默认的是播放完动画后,隐藏SceneA,显示SceneB,无法看到底层界面
+这里采用了比较巧的做法,适用钩子函数,覆盖navigator下原有的隐藏上一界面的逻辑处理
+
+```
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCENE_DISABLED_NATIVE_PROPS = {
+    pointerEvents: 'none',
+    style: {
+        top: SCREEN_HEIGHT,
+        bottom: -SCREEN_HEIGHT,
+        opacity: 0,
+    },
+};
+
+// Hook navigator method
+function hookedDisableScene(sceneIndex) {
+    const sceneConstructor = this.refs[`scene_${sceneIndex}`];
+    const nextRoute = this.state.routeStack[sceneIndex + 1];
+
+    if (nextRoute && nextRoute.isModal) {
+        sceneConstructor.setNativeProps({
+            pointerEvents: 'none',
+        });
+    } else {
+        sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
+    }
+}
+
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign  */
+export function hookNavigator(navigator) {
+    if (!navigator._hookedForDialog) {
+        navigator._hookedForDialog = true;
+        navigator._disableScene = hookedDisableScene.bind(navigator);
+    }
+}
+```
+参考链接:http://git.oschina.net/hzerica/react-native-starter-kit/blob/master/src/pages/dialogs/Dialog.js?dir=0&filepath=src%2Fpages%2Fdialogs%2FDialog.js&oid=e46833df4290d6219d9730959587e079b316a588&sha=4432ba6f8c531fb003ef80b81663820b5b588988
 
 # 导航栏定制

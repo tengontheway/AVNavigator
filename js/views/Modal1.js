@@ -13,39 +13,7 @@ import {
     Dimensions
 } from 'react-native';
 
-
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCENE_DISABLED_NATIVE_PROPS = {
-    pointerEvents: 'none',
-    style: {
-        top: SCREEN_HEIGHT,
-        bottom: -SCREEN_HEIGHT,
-        opacity: 0,
-    },
-};
-
-// Hook navigator method
-function hookedDisableScene(sceneIndex) {
-    const sceneConstructor = this.refs[`scene_${sceneIndex}`];
-    const nextRoute = this.state.routeStack[sceneIndex + 1];
-
-    if (nextRoute && nextRoute.isModal) {
-        sceneConstructor.setNativeProps({
-            pointerEvents: 'none',
-        });
-    } else {
-        sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
-    }
-}
-
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-param-reassign  */
-export function hookNavigator(navigator) {
-    if (!navigator._hookedForDialog) {
-        navigator._hookedForDialog = true;
-        navigator._disableScene = hookedDisableScene.bind(navigator);
-    }
-}
+const { width, height } = Dimensions.get('window');
 
 export default  class Modal1 extends Component {
     constructor(props) {
@@ -56,20 +24,16 @@ export default  class Modal1 extends Component {
         nav_mgr.pop()
     }
 
-    componentWillMount() {
-        hookNavigator(this.context.navigator);
-    }
-
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={styles.container}>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <Text onPress={this.onPress1.bind(this)}>关闭对话框</Text>
+                    <Text style={styles.text} onPress={this.onPress1.bind(this)}>关闭对话框</Text>
                 </View>
             </View>
         )
@@ -80,18 +44,17 @@ export default  class Modal1 extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: width/2,
+        height: height,
+        backgroundColor: '#eee',
     },
-    welcome: {
+    text: {
         fontSize: 20,
         textAlign: 'center',
         margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+        backgroundColor: 'green'
     },
 });

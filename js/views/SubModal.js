@@ -37,7 +37,7 @@ export default  class SubModal extends Component {
                     isShowRight: false,
                 },
 
-                animationType: Navigator.SceneConfigs.FloatFromRight
+                animName: 'FloatFromBottomAndroid'
             })
         }
     }

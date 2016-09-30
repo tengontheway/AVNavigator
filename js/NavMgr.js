@@ -139,12 +139,6 @@ class NavMgr
         nav.pop()
     }
 
-    showLightBox(route) {
-        route.isModal = true
-
-
-    }
-
     getAnimMgr() { return this.nav_anim_mgr }
 
     /**

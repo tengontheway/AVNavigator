@@ -7,13 +7,51 @@ import  {
     PropTypes,
     Modal,
     Text,
-    TouchableOpacity
+    TouchableWithoutFeedback,
+    Dimensions,
+    StyleSheet
 } from 'react-native';
 // import { match } from 'react-router';
 // import routesConfig from '../routes';
 
 import NavigationBar from './NavigationBar'
 import NavViewsMgr from './NavViewsMgr'
+
+const { width, height } = Dimensions.get('window');
+
+// 钩子函数
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCENE_DISABLED_NATIVE_PROPS = {
+    pointerEvents: 'none',
+    style: {
+        top: SCREEN_HEIGHT,
+        bottom: -SCREEN_HEIGHT,
+        opacity: 0,
+    },
+};
+
+// Hook navigator method
+function hookedDisableScene(sceneIndex) {
+    const sceneConstructor = this.refs[`scene_${sceneIndex}`];
+    const nextRoute = this.state.routeStack[sceneIndex + 1];
+
+    if (nextRoute && nextRoute.isModal) {
+        sceneConstructor.setNativeProps({
+            pointerEvents: 'none',
+        });
+    } else {
+        sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
+    }
+}
+
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign  */
+export function hookNavigator(navigator) {
+    if (!navigator._hookedForDialog) {
+        navigator._hookedForDialog = true;
+        navigator._disableScene = hookedDisableScene.bind(navigator);
+    }
+}
 
 export default class PageContainer extends React.Component {
     constructor(props) {
@@ -25,22 +63,9 @@ export default class PageContainer extends React.Component {
         }
     }
 
-    // componentWillMount() {
-    //     this.doMatch(this.props);
-    // }
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.location !== this.props.location) {
-    //         this.doMatch(newProps);
-    //     }
-    // }
-    // doMatch(props) {
-    //     match({
-    //         location,
-    //         routes: routesConfig,
-    //     }, (err, redirectLocation, renderProps) => {
-    //         this.setState({ routerState: renderProps });
-    //     });
-    // }
+    componentWillMount() {
+        hookNavigator(this.props.navigator);
+    }
 
     _onPressLeftItem() {
         nav_mgr.pop()
@@ -49,11 +74,9 @@ export default class PageContainer extends React.Component {
     _onPressRightItem() {
 
     }
-
-    onPressModal() {
-        this.setState({
-            visible: false
-        })
+    
+    _onCloseModal() {
+        nav_mgr.pop()
     }
 
     componentWillUnmount() {
@@ -71,40 +94,57 @@ export default class PageContainer extends React.Component {
         const navBarStyle = route.navBarStyle
         let is_modal = route.isModal
 
-        var modalBackgroundStyle = {
-            backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-        };
         return (
-            <View style={[{flex: 1}, is_modal ? {backgroundColor: 'rgba(0, 0, 0, 0.5)'} : null]}>
-                <View style={{flex: 1}}>
-                    {
-                        !navBarHidden ?
-                            <NavigationBar
-                                title='这个是标题'
-                                leftImageSource={require('./nav_back.png')}
-                                leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
-                                rightItemTitle='下一页'
-                                rightTextColor='#3393F2'
-                                leftItemFunc={this._onPressLeftItem.bind(this)}
-                                rightItemFunc={this._onPressRightItem.bind(this)}
-                                {...navBarStyle}
-                            />
-                            :
-                            null
-                    }
+            <View style={[{flex: 1}]}>
+                {/* 模态对话框*/}
+                {
+                    is_modal ?
+                        <TouchableWithoutFeedback
+                            onPress={this._onCloseModal.bind(this)}
+                        >
+                            <View style={styles.overlay} />
+                        </TouchableWithoutFeedback>
+                        :
+                        null
+                }
 
-                    <Component
-                        ref={com => {
-                            {/*this.core_compnent = com*/}
+                {/* 导航栏 */}
+                {
+                    !navBarHidden ?
+                        <NavigationBar
+                            title='这个是标题'
+                            leftImageSource={require('./nav_back.png')}
+                            leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
+                            rightItemTitle='下一页'
+                            rightTextColor='#3393F2'
+                            leftItemFunc={this._onPressLeftItem.bind(this)}
+                            rightItemFunc={this._onPressRightItem.bind(this)}
+                            {...navBarStyle}
+                        />
+                        :
+                        null
+                }
 
-                            {/*nav_mgr.bindComponent(com, this.props.route)*/}
-                        }}
-                        {...route.params}
-                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
-                        navigator={navigator}
-                    />
-                </View>
+                {/* 自定义组件 */}
+                <Component
+                    ref={com => {
+                        {/*this.core_compnent = com*/}
+
+                        {/*nav_mgr.bindComponent(com, this.props.route)*/}
+                    }}
+                    {...route.params}
+                    navigator={navigator}
+                />
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    overlay: {
+        position: 'absolute',
+        width,
+        height,
+        backgroundColor: 'rgba(255,0,0,0.6)',
+    },
+})
