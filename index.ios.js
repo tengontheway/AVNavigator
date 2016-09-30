@@ -25,7 +25,7 @@ import PageContainer from './js/PageContainer'
 import SubPassParams from './js/views/SubPassParams'
 import SubAnimPage from './js/views/SubAnimPage'
 import SubNavPage from './js/views/SubNavPage'
-import SubModel from './js/views/SubModel'
+import SubModal from './js/views/SubModal'
 import TestAnim from './js/views/TestAnim'
 import TestPassParams from './js/views/TestPassParams'
 import Modal1 from './js/views/Modal1'
@@ -37,10 +37,47 @@ NavViewsMgr.register("views.PageContainer", PageContainer)
 NavViewsMgr.register("views.SubPassParams", SubPassParams)
 NavViewsMgr.register("views.SubAnimPage", SubAnimPage)
 NavViewsMgr.register("views.SubNavPage", SubNavPage)
-NavViewsMgr.register("views.SubModel", SubModel)
+NavViewsMgr.register("views.SubModal", SubModal)
 NavViewsMgr.register("views.TestPassParams", TestPassParams)
 NavViewsMgr.register("views.TestAnim", TestAnim)
 NavViewsMgr.register("views.Modal1", Modal1)
+
+/**
+
+ const SCREEN_HEIGHT = Dimensions.get('window').height;
+ const SCENE_DISABLED_NATIVE_PROPS = {
+  pointerEvents: 'none',
+  style: {
+    top: SCREEN_HEIGHT,
+    bottom: -SCREEN_HEIGHT,
+    opacity: 0,
+  },
+};
+
+ // Hook navigator method
+ function hookedDisableScene(sceneIndex) {
+  const sceneConstructor = this.refs[`scene_${sceneIndex}`];
+  const nextRoute = this.state.routeStack[sceneIndex + 1];
+
+  if (nextRoute && nextRoute.isModal) {
+    sceneConstructor.setNativeProps({
+      pointerEvents: 'none',
+    });
+  } else {
+    sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
+  }
+}
+
+ // eslint-disable no-underscore-dangle
+// eslint-disable no-param-reassign
+export function hookNavigator(navigator) {
+    if (!navigator._hookedForDialog) {
+        navigator._hookedForDialog = true;
+        navigator._disableScene = hookedDisableScene.bind(navigator);
+    }
+}
+
+ */
 
 class AVNavigator extends Component {
     constructor(props) {
@@ -71,19 +108,12 @@ class AVNavigator extends Component {
                     }
                 }}
                 configureScene={(route) => {
-                    // 记录全局ID
-                    if (!route.isModal) {
-                        let id = NavMgr._glboal_idx
-                        route._gid = id
-                    }
-
                     if (route.animType) return route.animType
 
                     let anim = nav_mgr.getAnimMgr().getAnim(route.animName)
                     return anim || Navigator.SceneConfigs.VerticalDownSwipeJump;
                 }}
                 renderScene={(route, navigator) => {
-                    console.log("--------------------------2")
                     return <PageContainer {...route} route={route} navigator={navigator} kkk={this.state.test} />
                 }}/>
         );

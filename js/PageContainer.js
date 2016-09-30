@@ -75,58 +75,35 @@ export default class PageContainer extends React.Component {
             backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
         };
         return (
-            <View style={{flex: 1}}>
-                {
-                    is_modal ?
-                        <Modal
-                            animationType={'fade'}      //'none', 'slide', 'fade'
-                            transparent={this.state.transparent}
-                            visible={this.state.visible}
-                            onRequestClose={() => {
-                                alert("111")
-                                this.setState({
-                                    visible: false
-                                })
-                            }}
-                        >
-                            <TouchableOpacity style={[{flex: 1}, modalBackgroundStyle]} activeOpacity={1}
-                                              onPress={()=>this.onPressModal()}>
-                                <View>
-                                    <Text>哈哈哈哈</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </Modal>
-                        :
-                        <View style={{flex: 1}}>
-                            {
-                                !navBarHidden ?
-                                    <NavigationBar
-                                        title='这个是标题'
-                                        leftImageSource={require('./nav_back.png')}
-                                        leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
-                                        rightItemTitle='下一页'
-                                        rightTextColor='#3393F2'
-                                        leftItemFunc={this._onPressLeftItem.bind(this)}
-                                        rightItemFunc={this._onPressRightItem.bind(this)}
-                                        {...navBarStyle}
-                                    />
-                                    :
-                                    null
-                            }
-
-                            <Component
-                                ref={com => {
-                                    this.core_compnent = com
-
-                                    nav_mgr.bindComponent(com, this.props.route)
-                                }}
-                                {...route.params}
-                                navigator={navigator}
+            <View style={[{flex: 1}, is_modal ? {backgroundColor: 'rgba(0, 0, 0, 0.5)'} : null]}>
+                <View style={{flex: 1}}>
+                    {
+                        !navBarHidden ?
+                            <NavigationBar
+                                title='这个是标题'
+                                leftImageSource={require('./nav_back.png')}
+                                leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
+                                rightItemTitle='下一页'
+                                rightTextColor='#3393F2'
+                                leftItemFunc={this._onPressLeftItem.bind(this)}
+                                rightItemFunc={this._onPressRightItem.bind(this)}
+                                {...navBarStyle}
                             />
-                        </View>
-                }
+                            :
+                            null
+                    }
 
+                    <Component
+                        ref={com => {
+                            {/*this.core_compnent = com*/}
 
+                            {/*nav_mgr.bindComponent(com, this.props.route)*/}
+                        }}
+                        {...route.params}
+                        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+                        navigator={navigator}
+                    />
+                </View>
             </View>
         )
     }

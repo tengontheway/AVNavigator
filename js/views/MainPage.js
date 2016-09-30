@@ -73,13 +73,13 @@ export default  class MainPage extends Component {
     }
 
     onPressModalTest() {
-        nav_mgr.showLightBox({
-            screen: 'views.Modal1',
+        nav_mgr.push({
+            screen: 'views.SubModal',
             //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
             params: {},
             navBarHidden: false,
             navBarStyle: {
-                title: 'Modal1',
+                title: '测试模态对话框',
                 isShowRight: false,
             },
 

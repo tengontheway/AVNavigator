@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 
-export default  class SubModel extends Component {
+export default  class SubModal extends Component {
     constructor(props) {
         super(props)
     }
@@ -27,12 +27,13 @@ export default  class SubModel extends Component {
         //这里传递了navigator作为props
         if (navigator) {
             navigator.push({
-                screen: 'PassParams',
+                screen: 'views.Modal1',
+                isModal: true,
                 //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
                 params: {},
                 navBarHidden: true,
                 navBarStyle: {
-                    title: 'PassParams',
+                    title: 'Modal1',
                     isShowRight: false,
                 },
 
@@ -58,7 +59,7 @@ export default  class SubModel extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                    <Text onPress={this.onPress1.bind(this)}>页面1</Text>
+                    <Text onPress={this.onPress1.bind(this)}>弹出模态对话框</Text>
                 </View>
             </View>
         )

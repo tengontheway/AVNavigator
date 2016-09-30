@@ -9,9 +9,43 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Navigator
+    Navigator,
+    Dimensions
 } from 'react-native';
 
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCENE_DISABLED_NATIVE_PROPS = {
+    pointerEvents: 'none',
+    style: {
+        top: SCREEN_HEIGHT,
+        bottom: -SCREEN_HEIGHT,
+        opacity: 0,
+    },
+};
+
+// Hook navigator method
+function hookedDisableScene(sceneIndex) {
+    const sceneConstructor = this.refs[`scene_${sceneIndex}`];
+    const nextRoute = this.state.routeStack[sceneIndex + 1];
+
+    if (nextRoute && nextRoute.isModal) {
+        sceneConstructor.setNativeProps({
+            pointerEvents: 'none',
+        });
+    } else {
+        sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
+    }
+}
+
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign  */
+export function hookNavigator(navigator) {
+    if (!navigator._hookedForDialog) {
+        navigator._hookedForDialog = true;
+        navigator._disableScene = hookedDisableScene.bind(navigator);
+    }
+}
 
 export default  class Modal1 extends Component {
     constructor(props) {
@@ -19,6 +53,11 @@ export default  class Modal1 extends Component {
     }
 
     onPress1() {
+        nav_mgr.pop()
+    }
+
+    componentWillMount() {
+        hookNavigator(this.context.navigator);
     }
 
     render() {

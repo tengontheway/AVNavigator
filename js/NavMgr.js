@@ -114,12 +114,12 @@ class NavMgr
      * @param route
      */
     push(route) {
-        // 强制填充一个UID
-        let id = NavMgr._glboal_idx++
-        route._gid = id
-
-        NavMgr.last_scene_id = NavMgr.cur_scene_id
-        NavMgr.cur_scene_id = id
+        // // 强制填充一个UID
+        // let id = NavMgr._glboal_idx++
+        // route._gid = id
+        //
+        // NavMgr.last_scene_id = NavMgr.cur_scene_id
+        // NavMgr.cur_scene_id = id
 
         let nav = this.getNavigator()
         nav.push(route)
@@ -129,11 +129,11 @@ class NavMgr
      * 跳转回去并且卸载掉当前场景
      */
      pop() {
-        let scene = NavMgr._scenes[NavMgr.cur_scene_id]
-        if (!scene) {
-            console.error(`Pop scene error! CurSceneID ${NavMgr.cur_scene_id} lastSceneID ${NavMgr.last_scene_id}`)
-            return
-        }
+        // let scene = NavMgr._scenes[NavMgr.cur_scene_id]
+        // if (!scene) {
+        //     console.error(`Pop scene error! CurSceneID ${NavMgr.cur_scene_id} lastSceneID ${NavMgr.last_scene_id}`)
+        //     return
+        // }
 
         let nav = this.getNavigator()
         nav.pop()
