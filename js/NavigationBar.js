@@ -1,5 +1,10 @@
 /**
  * 导航条
+ *
+    参考微信:
+    1.左侧是【返回图片 + 上一页面的标题】或者不显示
+    2.中间是标题
+    3.右侧是【下一界面的图片 或者 文字】或者不显示
  * Created by EvilCode.T on 9/28/16.
  */
 'use strict';
@@ -21,6 +26,9 @@ const NAV_BAR_HEIGHT = 44
 
 export default class NavigationBar extends Component {
     static defaultProps = {
+        statusBarHeight: STATUS_BAR_HEIGHT,
+        navBarHeight: NAV_BAR_HEIGHT,
+
         title: 'title',
         titleTextColor: '#383838',
         titleViewFunc () {
@@ -44,13 +52,21 @@ export default class NavigationBar extends Component {
         //leftImageSource: require('./nav_back.png'),
         leftImageColor: '#383838',
         leftStyles: null,
-        leftStylesEx: null,
+
+        titleStylesEx: null,
+        leftImageStylesEx: null,
+        leftTextStylesEx: null,
+        rightImageStyleEx: null,
+        rightTextStyleEx: null,
     };
     static propTypes = {
+        statusBarHeight: PropTypes.number, // 状态栏高度
+        navBarHeight: PropTypes.number,     // 导航栏高度
         title: PropTypes.string,          // nav标题
         titleTextColor: PropTypes.string, // nav标题颜色
         titleView: PropTypes.node,        // nav自定义标题View(节点)
         titleViewFunc: PropTypes.func,    // nav的titleView点击事件
+        titleStylesEx: PropTypes.object,  // nav标题样式扩展
         barBGColor: PropTypes.string, // Bar的背景颜色
         barOpacity: PropTypes.number, // Bar的透明度
         barStyle: PropTypes.number,   // Bar的扩展属性,nav样式(暂未使用)
@@ -61,52 +77,50 @@ export default class NavigationBar extends Component {
         leftItemTitle: PropTypes.string,   // 左按钮title
         leftImageSource: PropTypes.node,   // 左Item图片(source) *左边有图片的时候，左边文字无效
         leftImageColor: PropTypes.string, // 左Item图片的颜色
-        leftStylesEx: PropTypes.object,        // 左边样式的补充(在原有样式上添加)
+        leftImageStylesEx: PropTypes.object,        // 左边样式的补充(在原有样式上添加)
+        leftTextStylesEx: PropTypes.object,        // 左边样式的补充(在原有样式上添加)
         leftStyles: PropTypes.object,          // 左边样式的替换
         leftTextColor: PropTypes.string,   // 左按钮标题颜色
         leftItemFunc: PropTypes.func,      // 左Item事件
         isShowRight: PropTypes.bool,         // 是否显示右边的区域
         rightItemTitle: PropTypes.string,  // 右按钮title
         rightImageSource: PropTypes.node,  // 右Item图片(source)
+        rightImageStyleEx: PropTypes.object,  // 右边图片样式扩展
+        rightTextStyleEx: PropTypes.object,  // 右边图片样式扩展
         rightTextColor: PropTypes.string,  // 右按钮标题颜色
         rightItemFunc: PropTypes.func,     // 右Item事件
     };
 
+    // 能够继承上一个NavigationBar的属性，这个需要开发者手动维护
+    static extendsAttr = {
+        'statusBarHeight': 1,
+        'navBarHeight': 1,
+        'titleTextColor': 1,
+        'titleStylesEx': 1,
+
+        'barBGColor': 1,
+        'barOpacity': 1,
+        'barStyle': 1,
+        'barBorderBottomColor': 1,
+        'barBorderBottomWidth': 1,
+        'statusbarShow': 1,
+
+        'leftImageColor': 1,
+        'leftImageStylesEx': 1,
+        'leftTextStylesEx': 1,
+        'leftStyles': 1,
+        'leftTextColor': 1,
+
+        'rightImageStyleEx': 1,
+        'rightTextStyleEx': 1,
+        'rightTextColor': 1,
+    }
+
     render() {
-        // 判断左Item的类型
-        var onlyLeftIcon = false; // 是否只是图片
-        if (this.props.leftItemTitle && this.props.leftImageSource) {
-            onlyLeftIcon = true;
-        } else if (this.props.leftImageSource) {
-            onlyLeftIcon = true;
-        }
-
-        // 左侧图片title都没有的情况下
-        var noneLeft = false;
-        if (!(this.props.leftItemTitle.length > 0) && !(this.props.leftImageSource)) {
-            noneLeft = true;
-        }
-
-        // 判断是否自定义titleView
-        var hasTitleView = false;
-        if (this.props.title && this.props.titleView) {
-            hasTitleView = true;
-        } else if (this.props.titleView) {
-            hasTitleView = true;
-        }
-
         // 判断右Item的类型
         var onlyRightIcon = false; // 是否只是图片
-        if (this.props.rightItemTitle && this.props.rightImageSource) {
+        if (this.props.rightImageSource) {
             onlyRightIcon = true;
-        } else if (this.props.rightImageSource) {
-            onlyRightIcon = true;
-        }
-
-        // 右侧图片title都没有的情况下
-        var noneRight = false;
-        if (!(this.props.rightItemTitle.length > 0) && !(this.props.rightImageSource)) {
-            noneRight = true;
         }
 
         // 判断是否显示20状态栏高度
@@ -116,73 +130,71 @@ export default class NavigationBar extends Component {
             showStatusbar = false;
         }
 
+        console.log("this.props.isShowRight:" + this.props.isShowRight)
         return (
             <View style={styles.nav_barView}>
                 <View style={[styles.nav_bar,
                     {
                         backgroundColor: this.props.barBGColor,
-                        height: showStatusbar ? NAV_BAR_HEIGHT + STATUS_BAR_HEIGHT : NAV_BAR_HEIGHT,
+                        height: showStatusbar ? this.props.navBarHeight + this.props.statusBarHeight : this.props.navBarHeight,
                         opacity: this.props.barOpacity
                     },
-                    showStatusbar ? {paddingTop: STATUS_BAR_HEIGHT} : {}, this.props.barStyle]}>
+                    showStatusbar ? {paddingTop: this.props.statusBarHeight} : {}, this.props.barStyle]}>
 
+                    {/** 标题 **/}
+                    <View style={[styles.nav_titleView, {height: this.props.navBarHeight}, showStatusbar ? {top: this.props.statusBarHeight} : {top: 0} ]}>
+                        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={[styles.nav_title, {color: this.props.titleTextColor}, this.props.titleStylesEx]}>
+                                {this.props.title}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/** 左边标题 **/}
                     {
                         this.props.isShowLeft ?
-                            <View style={styles.nav_ItemView}>
-                                { // 左侧item
-                                    !noneLeft
-                                        ? <TouchableOpacity
-                                        style={styles.nav_leftItem}
-                                        onPress={this.props.leftItemFunc}>
-                                        { // 左侧是图片还是文字
-                                            onlyLeftIcon ?
-                                                <Image
-                                                    style={this.props.leftStyles ? this.props.leftStyles : [styles.nav_leftImage, {tintColor: this.props.leftImageColor}, this.props.leftStylesEx]}
-                                                    source={this.props.leftImageSource}/>
-                                                :
-                                                <Text
-                                                    style={this.props.leftStyles ? this.props.leftStyles : [styles.nav_leftTitle, {color: this.props.leftTextColor}]}>
-                                                    {this.props.leftItemTitle}
-                                                </Text>
-                                        }
-                                    </TouchableOpacity>
-                                        : null
+                            <TouchableOpacity
+                                style={styles.nav_leftItem}
+                                onPress={this.props.leftItemFunc}>
+                                { // 左侧是图片还是文字
+                                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                        <Image
+                                            style={this.props.leftStyles ? this.props.leftStyles : [styles.nav_leftImage, {tintColor: this.props.leftImageColor}, this.props.leftImageStylesEx]}
+                                            source={this.props.leftImageSource}/>
+                                        <Text
+                                            style={this.props.leftStyles ? this.props.leftStyles : [styles.nav_leftTitle, {color: this.props.leftTextColor}, this.props.leftTextStylesEx]}>
+                                            {this.props.leftItemTitle}
+                                        </Text>
+                                    </View>
                                 }
-                            </View>
+                            </TouchableOpacity>
                             :
                             null
                     }
 
+                    {/** 居中占位 **/}
                     {
-                        hasTitleView
-                            ? <TouchableOpacity style={styles.nav_titleView} onPress={this.props.titleViewFunc}>
-                            {this.props.titleView}
-                        </TouchableOpacity>
-                            : <View style={styles.nav_titleView}>
-                            <Text style={[styles.nav_title, {color: this.props.titleTextColor}]}>
-                                {this.props.title}
-                            </Text>
-                        </View>
+                        <View style={{flex: 1}}></View>
                     }
 
+                    {/** 右边标题 **/}
                     {
                         this.props.isShowRight ?
                             <View style={styles.nav_ItemView}>
                                 { // 右侧item
-                                    !noneRight
-                                        ? <TouchableOpacity
+                                    <TouchableOpacity
                                         style={styles.nav_rightItem}
                                         onPress={this.props.rightItemFunc}>
                                         { // 右侧是图片还是文字
-                                            onlyRightIcon
-                                                ? <Image style={styles.nav_rightImage}
+                                            this.props.rightImageSource
+                                                ? <Image style={[styles.nav_rightImage, this.props.rightImageStyleEx]}
                                                          source={this.props.rightImageSource}/>
-                                                : <Text style={[styles.nav_rightTitle, {color: this.props.rightTextColor}]}>
+                                                : <Text
+                                                style={[styles.nav_rightTitle, this.props.rightTextStyleEx, {color: this.props.rightTextColor}]}>
                                                 {this.props.rightItemTitle}
                                             </Text>
                                         }
                                     </TouchableOpacity>
-                                        : null
                                 }
                             </View>
                             :

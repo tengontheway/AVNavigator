@@ -6,7 +6,10 @@
 
 import {
     StyleSheet,
+    Dimensions
 } from 'react-native';
+
+var {height, width} = Dimensions.get('window');
 
 export default  StyleSheet.create({
     // navBar
@@ -15,7 +18,7 @@ export default  StyleSheet.create({
     },
     nav_bar: {
         //flex:1,
-        flex: 1,
+        flex: 0,
         flexDirection:'row',
         justifyContent: 'center',
     },
@@ -23,13 +26,16 @@ export default  StyleSheet.create({
     // 标题纯title
     nav_title: {
         fontSize:17,
+        fontWeight: 'bold'
     },
 
     // titleView
     nav_titleView: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        // flex: 1,
+        position: 'absolute',
+        left: 0,
+        width: width,
+        // backgroundColor: 'red'
     },
 
     nav_ItemView:{
@@ -39,23 +45,27 @@ export default  StyleSheet.create({
 
     // 左Item
     nav_leftItem: {
+        flex: 0,
         marginLeft:8,
-        flex:1,
-        justifyContent: 'center',
-        alignSelf: 'flex-start',
+        // flex:1,
+        flexDirection: 'row',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // alignSelf: 'flex-start',
         //backgroundColor:'#f00',
     },
 
     // 左Item为title
     nav_leftTitle: {
-        marginRight:5,
-        marginLeft:5,
+        marginRight:0,
+        marginLeft:0,
         fontSize: 14,
     },
 
     // 左图片
     nav_leftImage: {
-        margin:10,
+        marginLeft:10,
+        marginRight: 5,
         resizeMode:'contain',
     },
 

@@ -50,7 +50,7 @@ export default  class MainPage extends Component {
             navBarHidden: false,
             navBarStyle: {
                 title: '测试导航栏',
-                isShowRight: false,
+                isShowRight: true,
             },
 
             animationType: Navigator.SceneConfigs.FloatFromRight
@@ -72,6 +72,36 @@ export default  class MainPage extends Component {
         })
     }
 
+    onPressModalTest() {
+        nav_mgr.push({
+            screen: 'views.SubModal',
+            //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
+            params: {},
+            navBarHidden: false,
+            navBarStyle: {
+                title: '测试模态对话框',
+                isShowRight: false,
+            },
+
+            animationType: Navigator.SceneConfigs.FloatFromRight
+        })
+    }
+
+    onPressTabBarTest() {
+        nav_mgr.push({
+            screen: 'views.SubTabbar',
+            //这里多出了一个 params 其实来自于<Navigator 里的一个方法的参数...
+            params: {},
+            navBarHidden: false,
+            navBarStyle: {
+                title: '测试标签页',
+                isShowRight: false,
+            },
+
+            animationType: Navigator.SceneConfigs.FloatFromRight
+        })
+    }
+
 
     render() {
         return (
@@ -84,6 +114,8 @@ export default  class MainPage extends Component {
                 <Text style={{margin: 10}} onPress={this.onPressPassParamsTest.bind(this)}>测试传递参数</Text>
                 <Text style={{margin: 10}} onPress={this.onPressNavTest.bind(this)}>测试导航栏</Text>
                 <Text style={{margin: 10}} onPress={this.onPressAnimTest.bind(this)}>测试动画</Text>
+                <Text style={{margin: 10}} onPress={this.onPressModalTest.bind(this)}>测试模态对话框</Text>
+                <Text style={{margin: 10}} onPress={this.onPressTabBarTest.bind(this)}>测试TabBar</Text>
             </View>
         )
 
