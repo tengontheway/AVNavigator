@@ -41,10 +41,6 @@ export default  class SubNavPage extends Component {
         }
     }
 
-    onPress2() {
-
-    }
-
     onExit() {
 
     }

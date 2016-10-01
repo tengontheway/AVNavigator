@@ -1,5 +1,12 @@
 # AVNavigator
-封装Navigator
+封装的一个以RN自带的Navigator为根节点的界面管理器，所有的界面跳转都通过RN自带的Navigator来处理，支持iOS && android。
+
+# 功能
+- 所有界面任意的跳转，自带的Navigator非常的灵活
+- 封装了带有记忆功能的NavationBar，界面定制更加灵活
+- 封装了基于Navigator的模态对话框, 弹出半透明的模态对话框易如反掌
+- 添加了Naviator中混杂着TabBar的处理情况
+- 所有的功能的基本都附带着Demo
 
 # 问题
 - 如何根据不同界面来来自定义navigatorBar?,全局使用定义好的navigatorbar，但部分界面会根据情况，调整这个bar，比如背景色或多加按钮等？
@@ -168,3 +175,4 @@ export function hookNavigator(navigator) {
 
 
 # 导航栏定制
+对导航栏`NavigationBar`采用了全局样式的保存，就是任意位置调用了NavigationBar的样式(首先是可见的前提下)，应用中会有一份记录gNavBarStyle，以后的NavBar样式是在之前的基础之上，增量覆盖并保存。
