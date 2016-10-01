@@ -92,28 +92,41 @@ export default class NavigationBar extends Component {
     };
 
     // 能够继承上一个NavigationBar的属性，这个需要开发者手动维护
-    static extendsAttr = {
-        'statusBarHeight': 1,
-        'navBarHeight': 1,
-        'titleTextColor': 1,
-        'titleStylesEx': 1,
+    static extendsAttr = [
+        'statusBarHeight',
+        'navBarHeight',
+        'titleTextColor',
+        'titleStylesEx',
 
-        'barBGColor': 1,
-        'barOpacity': 1,
-        'barStyle': 1,
-        'barBorderBottomColor': 1,
-        'barBorderBottomWidth': 1,
-        'statusbarShow': 1,
+        'barBGColor',
+        'barOpacity',
+        'barStyle',
+        'barBorderBottomColor',
+        'barBorderBottomWidth',
+        'statusbarShow',
 
-        'leftImageColor': 1,
-        'leftImageStylesEx': 1,
-        'leftTextStylesEx': 1,
-        'leftStyles': 1,
-        'leftTextColor': 1,
+        'leftImageColor',
+        'leftImageStylesEx',
+        'leftTextStylesEx',
+        'leftStyles',
+        'leftTextColor',
 
-        'rightImageStyleEx': 1,
-        'rightTextStyleEx': 1,
-        'rightTextColor': 1,
+        'rightImageStyleEx',
+        'rightTextStyleEx',
+        'rightTextColor',
+    ]
+
+    /**
+     * 可继承属性的覆盖
+     * 如果目标风格中不存在特殊属性, extendsAttr 复制到目标属性中,否则使用当前属性。
+     * 为了制作全局的唯一风格,只要一个navigator钟设置了风格,其余的位置都会继承这种风格
+     **/
+    static extendsWithAttr(old_navbar_styles, new_navbar_styles) {
+        // if (old_navbar_styles && new_navbar_styles) {
+        //     NavigationBar.extendsAttr.map((key, idx)=>{
+        //         new_navbar_styles[key] = new_navbar_styles[key] || old_navbar_styles[key]
+        //     })
+        // }
     }
 
     render() {

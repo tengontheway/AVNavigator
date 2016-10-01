@@ -282,6 +282,49 @@ export default  class SubNavPage extends Component {
                 }
             },
 
+            {
+                titleName: '完全继承文字版',
+                route: {
+                    screen: 'views.TestNav',
+
+                    navBarHidden: false,
+                    navBarStyle: {
+                        title:'完全继承文字版',
+                        onPressLeft: ()=>{
+                            // alert("Click left")
+                            nav_mgr.pop()
+                        },
+
+                        rightItemTitle: '下一页',
+                        rightImageSource: null,
+                        onPressRight: ()=>{
+                            alert("Click right")
+                        },
+                    },
+                }
+            },
+
+            {
+                titleName: '完全继承文字版',
+                route: {
+                    screen: 'views.TestNav',
+
+                    navBarHidden: false,
+                    navBarStyle: {
+                        title:'完全继承文字版',
+                        onPressLeft: ()=>{
+                            // alert("Click left")
+                            nav_mgr.pop()
+                        },
+
+                        rightImageSource: require('./img/tab_phone_sel.png'),
+                        onPressRight: ()=>{
+                            alert("Click right")
+                        },
+                    },
+                }
+            },
+
         ]
     }
 

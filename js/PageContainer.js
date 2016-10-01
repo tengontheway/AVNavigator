@@ -66,14 +66,24 @@ export function hookNavigator(navigator) {
 }
 
 export default class PageContainer extends React.Component {
+    // 自动记录之前设置过的风格
+    static autoMemoryNavigationBarStyles = true
+    static memoryBarStyles = {}     //记录的样式
+
+    static propTypes = {
+        // screen: PropTypes.string,    // 要显示的界面
+        // dlgBGStylesEx: PropTypes.object,      // 对话框的背景样式扩展(eg.背景色调整)
+        // route: PropTypes.object,              // 路由属性
+    }
+
+    static defaultProps = {
+        // screen: '',
+        // dlgBGStylesEx: null,
+        // route: null,
+    }
+
     constructor(props) {
         super(props)
-
-        this.state = {
-            transparent: true,
-            visible: true
-        }
-
     }
 
     componentWillMount() {
@@ -105,10 +115,8 @@ export default class PageContainer extends React.Component {
     }
 
     componentWillUnmount() {
-        if (this.core_compnent) {
-            if (this.core_compnent.onExit && typeof this.core_compnent.onExit === 'function') {
-                this.core_compnent.onExit()
-            }
+        if (this.core_compnent && this.core_compnent.onExit && typeof this.core_compnent.onExit === 'function') {
+            this.core_compnent.onExit()
         }
     }
 
@@ -125,6 +133,16 @@ export default class PageContainer extends React.Component {
             last_title = last_route.navBarStyle.title
         }
 
+        // 自动记忆一些特殊属性,学会成长
+        let oldMemoryStyles = utils.clone(PageContainer.memoryBarStyles)
+        if (PageContainer.autoMemoryNavigationBarStyles) {
+            // 记录新属性
+            NavigationBar.extendsWithAttr(navBarStyle, PageContainer.memoryBarStyles)
+        }
+
+        console.log("---------------route:" + utils.toString(route))
+        console.log("-----------route.title:" + route.navBarStyle.title)
+
         return (
             <View style={[{flex: 1}]}>
                 {/* 模态对话框*/}
@@ -133,7 +151,7 @@ export default class PageContainer extends React.Component {
                         <TouchableWithoutFeedback
                             onPress={this._onCloseModal.bind(this)}
                         >
-                            <View style={styles.overlay} />
+                            <View style={[styles.overlay, this.props.dlgBGStylesEx]} />
                         </TouchableWithoutFeedback>
                         :
                         null
@@ -143,24 +161,10 @@ export default class PageContainer extends React.Component {
                 {
                     !navBarHidden ?
                         <NavigationBar
-                            statusbarShow= {true}
-                            barBGColor='rgba(0, 255, 0, 0.5)'
-                            barOpacity={0.5}
-
-                            title='这个是标题'
-                            titleStylesEx={{fontSize: 22, color: 'red', fontWeight: 'bold'}}
-
-                            leftImageSource={require('./nav_back.png')}
                             leftItemTitle={last_title}
-                            leftTextColor='#3393F2'
-                            leftImageStylesEx={{width: 15, height: 15, tintColor: "#3393F2", marginLeft: 0}}
-                            leftTextStylesEx={{fontSize: 15}}
+                            leftImageSource= {require('./nav_back.png')}
 
-                            rightItemTitle='下一页'
-                            rightTextColor='#3393F2'
-                            rightImageSource={require('./views/img/tab_phone_sel.png')}
-                            rightImageStyleEx={{width: 22, height: 22, tintColor: "#3393F2"}}
-
+                            {...oldMemoryStyles}
                             {...navBarStyle}
                             leftItemFunc={this._onPressLeftItem.bind(this)}
                             rightItemFunc={this._onPressRightItem.bind(this)}
