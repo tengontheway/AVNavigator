@@ -44,12 +44,24 @@ function hookedDisableScene(sceneIndex) {
     }
 }
 
+function getLastRoute() {
+    let index = this.state.routeStack.length-1
+    let last_idx = index - 1
+    if (last_idx >= 0) {
+        return this.state.routeStack[last_idx]
+    }
+
+    return null
+}
+
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign  */
 export function hookNavigator(navigator) {
     if (!navigator._hookedForDialog) {
         navigator._hookedForDialog = true;
+
         navigator._disableScene = hookedDisableScene.bind(navigator);
+        navigator.getLastRoute = getLastRoute.bind(navigator)
     }
 }
 
@@ -61,6 +73,7 @@ export default class PageContainer extends React.Component {
             transparent: true,
             visible: true
         }
+
     }
 
     componentWillMount() {
@@ -68,13 +81,25 @@ export default class PageContainer extends React.Component {
     }
 
     _onPressLeftItem() {
+        const {route} = this.props
+        if (route && route.navBarStyle && route.navBarStyle.onPressLeft) {
+            route.navBarStyle.onPressLeft()
+            return
+        }
+
         nav_mgr.pop()
     }
 
+    /**
+     *  点击NavigationBar右边的按钮
+     **/
     _onPressRightItem() {
-
+        const {route} = this.props
+        if (route && route.navBarStyle && route.navBarStyle.onPressRight) {
+            route.navBarStyle.onPressRight()
+        }
     }
-    
+
     _onCloseModal() {
         nav_mgr.pop()
     }
@@ -94,6 +119,12 @@ export default class PageContainer extends React.Component {
         const navBarStyle = route.navBarStyle
         let is_modal = route.isModal
 
+        let last_title = ''
+        let last_route = navigator.getLastRoute()
+        if (last_route && last_route.navBarStyle && last_route.navBarStyle.title) {
+            last_title = last_route.navBarStyle.title
+        }
+
         return (
             <View style={[{flex: 1}]}>
                 {/* 模态对话框*/}
@@ -112,14 +143,27 @@ export default class PageContainer extends React.Component {
                 {
                     !navBarHidden ?
                         <NavigationBar
+                            statusbarShow= {true}
+                            barBGColor='rgba(0, 255, 0, 0.5)'
+                            barOpacity={0.5}
+
                             title='这个是标题'
+                            titleStylesEx={{fontSize: 22, color: 'red', fontWeight: 'bold'}}
+
                             leftImageSource={require('./nav_back.png')}
-                            leftStylesEx={{width: 15, height: 15, tintColor: "#3393F2"}}
+                            leftItemTitle={last_title}
+                            leftTextColor='#3393F2'
+                            leftImageStylesEx={{width: 15, height: 15, tintColor: "#3393F2", marginLeft: 0}}
+                            leftTextStylesEx={{fontSize: 15}}
+
                             rightItemTitle='下一页'
                             rightTextColor='#3393F2'
+                            rightImageSource={require('./views/img/tab_phone_sel.png')}
+                            rightImageStyleEx={{width: 22, height: 22, tintColor: "#3393F2"}}
+
+                            {...navBarStyle}
                             leftItemFunc={this._onPressLeftItem.bind(this)}
                             rightItemFunc={this._onPressRightItem.bind(this)}
-                            {...navBarStyle}
                         />
                         :
                         null

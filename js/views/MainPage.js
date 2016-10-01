@@ -50,7 +50,7 @@ export default  class MainPage extends Component {
             navBarHidden: false,
             navBarStyle: {
                 title: '测试导航栏',
-                isShowRight: false,
+                isShowRight: true,
             },
 
             animationType: Navigator.SceneConfigs.FloatFromRight

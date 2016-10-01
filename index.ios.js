@@ -32,6 +32,7 @@ import Modal1 from './js/views/Modal1'
 import SubTabbar from './js/views/SubTabbar'
 import TabBarHomePage from './js/views/TabBarHomePage'
 import TabBarSubPage from './js/views/TabBarSubPage'
+import TestNav from './js/views/TestNav'
 
 
 NavViewsMgr.register("views.MainPage", MainPage)
@@ -47,6 +48,7 @@ NavViewsMgr.register("views.TestAnim", TestAnim)
 NavViewsMgr.register("views.Modal1", Modal1)
 NavViewsMgr.register("views.TabBarHomePage", TabBarHomePage)
 NavViewsMgr.register("views.TabBarSubPage", TabBarSubPage)
+NavViewsMgr.register("views.TestNav", TestNav)
 
 
 /**

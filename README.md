@@ -77,6 +77,8 @@ if (navigator) {
             title: '首页',
             isShowLeft: false,
             isShowRight: false,
+            onPressLeft: ()=> null,
+            onPressRight: () => null,
         }
     })
 }
@@ -176,3 +178,7 @@ export function hookNavigator(navigator) {
 
 # 导航栏定制
 对导航栏`NavigationBar`采用了全局样式的保存，就是任意位置调用了NavigationBar的样式(首先是可见的前提下)，应用中会有一份记录gNavBarStyle，以后的NavBar样式是在之前的基础之上，增量覆盖并保存。
+
+参数名 | 类型 | 所属 | 参数功能
+onPressLeft  | Function | navBarStyle | 点击Navigator左边区域触发(是否保存)
+onPressRight | Function | navBarStyle | 点击Navigator右边区域触发
