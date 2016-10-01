@@ -29,6 +29,9 @@ import SubModal from './js/views/SubModal'
 import TestAnim from './js/views/TestAnim'
 import TestPassParams from './js/views/TestPassParams'
 import Modal1 from './js/views/Modal1'
+import SubTabbar from './js/views/SubTabbar'
+import TabBarHomePage from './js/views/TabBarHomePage'
+import TabBarSubPage from './js/views/TabBarSubPage'
 
 
 NavViewsMgr.register("views.MainPage", MainPage)
@@ -38,9 +41,13 @@ NavViewsMgr.register("views.SubPassParams", SubPassParams)
 NavViewsMgr.register("views.SubAnimPage", SubAnimPage)
 NavViewsMgr.register("views.SubNavPage", SubNavPage)
 NavViewsMgr.register("views.SubModal", SubModal)
+NavViewsMgr.register("views.SubTabbar", SubTabbar)
 NavViewsMgr.register("views.TestPassParams", TestPassParams)
 NavViewsMgr.register("views.TestAnim", TestAnim)
 NavViewsMgr.register("views.Modal1", Modal1)
+NavViewsMgr.register("views.TabBarHomePage", TabBarHomePage)
+NavViewsMgr.register("views.TabBarSubPage", TabBarSubPage)
+
 
 /**
 

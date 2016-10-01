@@ -163,4 +163,8 @@ export function hookNavigator(navigator) {
 ```
 参考链接:http://git.oschina.net/hzerica/react-native-starter-kit/blob/master/src/pages/dialogs/Dialog.js?dir=0&filepath=src%2Fpages%2Fdialogs%2FDialog.js&oid=e46833df4290d6219d9730959587e079b316a588&sha=4432ba6f8c531fb003ef80b81663820b5b588988
 
+# TabBar的做法定制
+使用了第三方插件react-native-tab-navigator,TabBar并没有封装到所有根Navigator之中，只是在需要的HomePage(带TabBar的主页而非初始页面)中添加TabBar，而不是在所有页面中添加一个TabBar通过参数来控制显示隐藏。
+
+
 # 导航栏定制
