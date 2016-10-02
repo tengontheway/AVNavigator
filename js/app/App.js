@@ -12,13 +12,13 @@ import {
 import utils from "../utils/Util"
 global.utils = utils
 
-import NavMgr from '../NavMgr'
+import NavMgr from '../navbar/NavMgr'
 global.nav_mgr = new NavMgr()
 
-import NavViewsMgr from '../NavViewsMgr'
+import NavViewsMgr from '../navbar/NavViewsMgr'
 
 import MainPage from '../views/MainPage';
-import PageContainer from '../PageContainer'
+import PageContainer from '../navbar/PageContainer'
 import SubPassParams from '../views/SubPassParams'
 import SubAnimPage from '../views/SubAnimPage'
 import SubNavPage from '../views/SubNavPage'
