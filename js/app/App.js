@@ -12,80 +12,12 @@ import {
 import utils from "../utils/Util"
 global.utils = utils
 
-import NavMgr from '../navbar/NavMgr'
+import {NavMgr, PageContainer} from '../navbar'
 global.nav_mgr = new NavMgr()
 
-import NavViewsMgr from '../navbar/NavViewsMgr'
-
-import MainPage from '../views/MainPage';
-import PageContainer from '../navbar/PageContainer'
-import SubPassParams from '../views/SubPassParams'
-import SubAnimPage from '../views/SubAnimPage'
-import SubNavPage from '../views/SubNavPage'
-import SubModal from '../views/SubModal'
-import TestAnim from '../views/TestAnim'
-import TestPassParams from '../views/TestPassParams'
-import Modal1 from '../views/Modal1'
-import SubTabbar from '../views/SubTabbar'
-import TabBarHomePage from '../views/TabBarHomePage'
-import TabBarSubPage from '../views/TabBarSubPage'
-import TestNav from '../views/TestNav'
-
-
-NavViewsMgr.register("views.MainPage", MainPage)
-NavViewsMgr.register("views.PageContainer", PageContainer)
-
-NavViewsMgr.register("views.SubPassParams", SubPassParams)
-NavViewsMgr.register("views.SubAnimPage", SubAnimPage)
-NavViewsMgr.register("views.SubNavPage", SubNavPage)
-NavViewsMgr.register("views.SubModal", SubModal)
-NavViewsMgr.register("views.SubTabbar", SubTabbar)
-NavViewsMgr.register("views.TestPassParams", TestPassParams)
-NavViewsMgr.register("views.TestAnim", TestAnim)
-NavViewsMgr.register("views.Modal1", Modal1)
-NavViewsMgr.register("views.TabBarHomePage", TabBarHomePage)
-NavViewsMgr.register("views.TabBarSubPage", TabBarSubPage)
-NavViewsMgr.register("views.TestNav", TestNav)
-
-
-/**
-
- const SCREEN_HEIGHT = Dimensions.get('window').height;
- const SCENE_DISABLED_NATIVE_PROPS = {
-  pointerEvents: 'none',
-  style: {
-    top: SCREEN_HEIGHT,
-    bottom: -SCREEN_HEIGHT,
-    opacity: 0,
-  },
-};
-
- // Hook navigator method
- function hookedDisableScene(sceneIndex) {
-  const sceneConstructor = this.refs[`scene_${sceneIndex}`];
-  const nextRoute = this.state.routeStack[sceneIndex + 1];
-
-  if (nextRoute && nextRoute.isModal) {
-    sceneConstructor.setNativeProps({
-      pointerEvents: 'none',
-    });
-  } else {
-    sceneConstructor.setNativeProps(SCENE_DISABLED_NATIVE_PROPS);
-  }
-}
-
- // eslint-disable no-underscore-dangle
- // eslint-disable no-param-reassign
- export function hookNavigator(navigator) {
-    if (!navigator._hookedForDialog) {
-        navigator._hookedForDialog = true;
-        navigator._disableScene = hookedDisableScene.bind(navigator);
-    }
-}
-
- */
-
-PageContainer.autoMemoryNavigationBarStyles = true
+// screen related book keepi
+import { registerScreens } from '../views_register';
+registerScreens();
 
 export default class App extends Component {
     constructor(props) {
