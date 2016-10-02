@@ -17,6 +17,4 @@ export function registerScreens(store, Provider) {
 
         NavViewsMgr.register(name, component)
     }
-
-    console.log("NavViewsMgr:" + utils.toString(views))
 }
