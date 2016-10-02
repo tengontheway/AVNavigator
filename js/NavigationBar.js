@@ -122,11 +122,11 @@ export default class NavigationBar extends Component {
      * 为了制作全局的唯一风格,只要一个navigator钟设置了风格,其余的位置都会继承这种风格
      **/
     static extendsWithAttr(old_navbar_styles, new_navbar_styles) {
-        // if (old_navbar_styles && new_navbar_styles) {
-        //     NavigationBar.extendsAttr.map((key, idx)=>{
-        //         new_navbar_styles[key] = new_navbar_styles[key] || old_navbar_styles[key]
-        //     })
-        // }
+        if (old_navbar_styles && new_navbar_styles) {
+            NavigationBar.extendsAttr.map((key, idx)=>{
+                new_navbar_styles[key] = new_navbar_styles[key] || old_navbar_styles[key]
+            })
+        }
     }
 
     render() {

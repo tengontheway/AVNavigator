@@ -140,9 +140,6 @@ export default class PageContainer extends React.Component {
             NavigationBar.extendsWithAttr(navBarStyle, PageContainer.memoryBarStyles)
         }
 
-        console.log("---------------route:" + utils.toString(route))
-        console.log("-----------route.title:" + route.navBarStyle.title)
-
         return (
             <View style={[{flex: 1}]}>
                 {/* 模态对话框*/}
